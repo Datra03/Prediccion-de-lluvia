@@ -13,7 +13,6 @@ export iniciar_proyecto
 
 gr()
 
-
 # MULTIPLICACION PARALELA
 
 
