@@ -4,8 +4,8 @@
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
 
-const char* ssid = "MOCOCITOS_mundial";
-const char* password = "1234567890";
+const char* ssid = "RIUAEMex";
+const char* password = "";
 
 WebServer server(80);
 
