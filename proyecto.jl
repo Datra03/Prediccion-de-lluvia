@@ -13,9 +13,9 @@ export iniciar_proyecto
 
 gr()
 
-# =====================================================
+
 # MULTIPLICACION PARALELA
-# =====================================================
+
 
 function multiplicacion_paralela(A, B)
 
@@ -47,9 +47,9 @@ function multiplicacion_paralela(A, B)
 
 end
 
-# =====================================================
+
 # PORCENTAJE LLUVIA
-# =====================================================
+
 
 function porcentaje_lluvia(valor)
 
@@ -65,9 +65,9 @@ function porcentaje_lluvia(valor)
 
 end
 
-# =====================================================
+
 # INTERPRETACION
-# =====================================================
+
 
 function interpretar_lluvia(p)
 
@@ -95,9 +95,9 @@ function interpretar_lluvia(p)
 
 end
 
-# =====================================================
+
 # LEER ARCHIVO
-# =====================================================
+
 
 function leer_datos_archivo(nombre)
 
@@ -143,9 +143,9 @@ function leer_datos_archivo(nombre)
 
 end
 
-# =====================================================
+
 # ENTRENAR MODELO TEMPORAL
-# =====================================================
+
 
 function entrenar_modelo(datos, offset)
 
@@ -187,18 +187,15 @@ function entrenar_modelo(datos, offset)
 
 end
 
-# =====================================================
+
 # PROYECTO PRINCIPAL
-# =====================================================
+
 
 function iniciar_proyecto()
 
     url = "http://172.17.180.41/datos"
 
-    # =====================================================
     # DATOS TEMPORALES
-    # =====================================================
-
     temperaturas = Float64[]
     humedades = Float64[]
     presiones = Float64[]
@@ -214,10 +211,8 @@ function iniciar_proyecto()
 
     contador = 0
 
-    # =====================================================
     # GRAFICA
-    # =====================================================
-
+    
     plt = plot(
         title = "Prediccion temporal de lluvia",
         xlabel = "Muestras",
@@ -227,17 +222,17 @@ function iniciar_proyecto()
         size = (1400,700)
     )
 
-    println("\n======================================")
+    
     println("SISTEMA INICIADO")
-    println("======================================")
+    
 
     while true
 
         try
 
-            # =====================================================
+            
             # LEER ESP32
-            # =====================================================
+            
 
             response = Downloads.download(url; timeout=10)
 
@@ -255,9 +250,9 @@ function iniciar_proyecto()
 
             lluvia = Float64(datos.lluvia)
 
-            # =====================================================
+            
             # GUARDAR
-            # =====================================================
+            
 
             push!(temperaturas, temp)
             push!(humedades, hum)
@@ -269,9 +264,9 @@ function iniciar_proyecto()
 
             contador += 1
 
-            # =====================================================
+            
             # MOSTRAR DATOS
-            # =====================================================
+            
 
             println("--------------------------------")
 
@@ -283,9 +278,9 @@ function iniciar_proyecto()
                 " R:", lluvia
             )
 
-            # =====================================================
+            
             # GUARDAR CADA 60 DATOS
-            # =====================================================
+            
 
             if contador >= 60
 
@@ -318,26 +313,26 @@ function iniciar_proyecto()
 
                 end
 
-                # =====================================================
+                
                 # LEER HISTORIAL
-                # =====================================================
+                
 
                 datos_archivo = leer_datos_archivo(
                     "datos.dat"
                 )
 
-                # =====================================================
+                
                 # OFFSETS
-                # =====================================================
+                
 
                 offset_1 = 12
                 offset_10 = 120
                 offset_30 = 360
                 offset_60 = 720
 
-                # =====================================================
+                
                 # PREDICCIONES TEMPORALES
-                # =====================================================
+                
 
                 pred_1 = entrenar_modelo(
                     datos_archivo,
@@ -359,18 +354,18 @@ function iniciar_proyecto()
                     offset_60
                 )
 
-                # =====================================================
+                
                 # GUARDAR HISTORIAL
-                # =====================================================
+                
 
                 push!(pred1_hist, pred_1)
                 push!(pred10_hist, pred_10)
                 push!(pred30_hist, pred_30)
                 push!(pred60_hist, pred_60)
 
-                # =====================================================
+                
                 # PORCENTAJES
-                # =====================================================
+                
 
                 p1 = isnan(pred_1) ? 0 :
                     porcentaje_lluvia(pred_1)
@@ -384,9 +379,9 @@ function iniciar_proyecto()
                 p60 = isnan(pred_60) ? 0 :
                     porcentaje_lluvia(pred_60)
 
-                # =====================================================
+                
                 # MOSTRAR
-                # =====================================================
+                
 
                 println("\n======================================")
                 println("PREDICCIONES")
@@ -432,9 +427,9 @@ function iniciar_proyecto()
                 println("Estado: ",
                     interpretar_lluvia(p60))
 
-                # =====================================================
+                
                 # GRAFICA
-                # =====================================================
+                
 
                 x_real = 1:length(historial_lluvia)
 
@@ -453,9 +448,9 @@ function iniciar_proyecto()
                     size = (1400,700)
                 )
 
-                # =====================================================
+                
                 # PRED 1
-                # =====================================================
+                
 
                 x1 = collect(1:length(pred1_hist))
 
@@ -469,9 +464,9 @@ function iniciar_proyecto()
                     linewidth = 2
                 )
 
-                # =====================================================
+                
                 # PRED 10
-                # =====================================================
+                
 
                 x10 = collect(1:length(pred10_hist))
 
@@ -485,9 +480,9 @@ function iniciar_proyecto()
                     linewidth = 2
                 )
 
-                # =====================================================
+                
                 # PRED 30
-                # =====================================================
+                
 
                 x30 = collect(1:length(pred30_hist))
 
@@ -501,9 +496,9 @@ function iniciar_proyecto()
                     linewidth = 2
                 )
 
-                # =====================================================
+                
                 # PRED 60
-                # =====================================================
+                
 
                 x60 = collect(1:length(pred60_hist))
 
@@ -519,9 +514,9 @@ function iniciar_proyecto()
 
                 display(plt)
 
-                # =====================================================
+                
                 # LIMPIAR
-                # =====================================================
+                
 
                 contador = 0
 
@@ -533,9 +528,9 @@ function iniciar_proyecto()
 
             end
 
-            # =====================================================
+            
             # ESPERA
-            # =====================================================
+            
 
             sleep(5)
 
